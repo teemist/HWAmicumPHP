@@ -40,4 +40,3 @@
 //if(\in_array('five', $b, true)) echo 'ok';
 //else 'not ok';
 
-
