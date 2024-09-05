@@ -1,6 +1,6 @@
 <?php
-require_once('../../lesson4/config/config.php');
-require_once('../../lesson4/engine/db.php');
+require_once('../config/config.php');
+require_once('../engine/db.php');
 // 1, 2
 function showImg()
 {
@@ -25,8 +25,8 @@ function showImg()
 
     <?php foreach (showImg() as $image):
         ?>
-        <a href="<?= '../templates/fullPhoto.php'.'?name='.$image ?>">
-            <img src='<?= '../public/img/' . $image ?>' width='400'>
+        <a href="<?= 'fullPhoto.php'.'?name='.$image ?>">
+            <img src='<?= IMGL5_DIR . $image ?>' width='400'>
         </a>
     <?php endforeach; ?>
 </div>

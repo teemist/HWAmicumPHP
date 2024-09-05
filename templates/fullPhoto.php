@@ -1,6 +1,6 @@
 <?php
-require_once('../../lesson4/config/config.php');
-require_once('../../lesson4/engine/db.php');
+require_once('../config/config.php');
+require_once('../engine/db.php');
 function watchCounter($watches, $filename){
     $watches++;
     executeQuery("UPDATE images SET watches = ".$watches." WHERE filename = '".$filename."'");
@@ -28,7 +28,7 @@ function getWatches(){
 <body>
 <div>
     <h1>Картинка в полном размере</h1>
-        <img src='<?= '../public/img/' . $_GET['name'] ?>' width='400'>
+        <img src='<?= IMGL5_DIR . $_GET['name'] ?>' width='400'>
     <h2><?= getWatches() ?></h2>
 </div>
 </body>

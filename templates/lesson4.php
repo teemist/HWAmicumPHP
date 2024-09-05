@@ -29,14 +29,14 @@ function isCollision($a, $b){
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Lesson4</title>
+    <title>index</title>
 </head>
 <body>
 <div>
     <h2>Задание 1, 2</h2>
 
-    <?php foreach (showImg(IMG_DIR) as $image): ?>
-        <a href="<?='img/'. $image ?>"><img src='<?='img/'.$image ?>' width='240'></a>
+    <?php foreach (showImg(IMGL4_DIR) as $image): ?>
+        <a href="<?=IMGL4_DIR. $image ?>"><img src='<?=IMGL4_DIR.$image ?>' width='240'></a>
     <?php endforeach;?>
 </div>
 <div>
@@ -48,7 +48,7 @@ function isCollision($a, $b){
         $a[0] = 2;
         $a[1] = 5;
 
-        $b[0] = 2;
+        $b[0] = 6;
         $b[1] = 7;
         if(isCollision($a, $b)) echo 'Отрезки пересекаются';
         else echo 'Отрезки не пересекаются';
