@@ -62,6 +62,10 @@ function showReviews()
     }
 }
 
+function getProducts(){
+    return getAssocResult('SELECT * FROM products');
+}
+
 function connect()
 {
     $db = mysqli_connect(HOST, USER, PASS, DB);

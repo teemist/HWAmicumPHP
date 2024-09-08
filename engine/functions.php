@@ -1,18 +1,35 @@
 <?php
-
-
 require_once('db.php');
-require_once('../config/config.php');
 
-function showGoodList()
+function showCart()
 {
-    $goodInfo = getAssocResult('SELECT title, img, price FROM goods');
-    foreach ($goodInfo as $good) {
-        $title = $good['title'];
-        $img = $good['img'];
-        $price = $good['price'];
+    if (isset($_SESSION['user'])) {
+        $login = $_SESSION['user'];
+//        $user_id = getAssocResult("SELECT id FROM user WHERE login = '{$login}'");
+//        var_dump($login);
+//        var_dump($user_id);
+        $cart = getAssocResult("SELECT title, img, description, price FROM user
+                                    INNER JOIN cart ON user.id = cart.user_id
+                                    INNER JOIN goods ON cart.goods_id = goods.id
+                                    WHERE user.login = '{$login}';");
+
+//        $cart = getAssocResult("use test;SELECT * FROM cart;");
+        var_dump($cart);
+
+        return $cart;
     }
-    var_dump($goodInfo);
+//        return $cart;
+//    }
+
+
+
+//    $goodInfo = getAssocResult('SELECT title, img, price FROM goods');
+//    foreach ($goodInfo as $good) {
+//        $title = $good['title'];
+//        $img = $good['img'];
+//        $price = $good['price'];
+//    }
+//    var_dump($goodInfo);
 }
 
 function getImg($dir)
@@ -40,10 +57,18 @@ function showImg($dir)
     return $result;
 }
 
-function isCollision($a, $b){
-    if($a[1] > $b[0]) { echo true; return true; }
-    else if($a[0] > $b[1]) { echo true; return true; }
-    else { echo false; return false; }
+function isCollision($a, $b)
+{
+    if ($a[1] > $b[0]) {
+        echo true;
+        return true;
+    } else if ($a[0] > $b[1]) {
+        echo true;
+        return true;
+    } else {
+        echo false;
+        return false;
+    }
 }
 
 function showGoodImg()
@@ -53,18 +78,33 @@ function showGoodImg()
     return $fileName;
 }
 
-function addGood(){
+function deleteGood()
+{
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $deletedGood = '';
+        if (isset($_POST['image'])) $deletedGood = $_POST['image'];
+        executeQuery("DELETE FROM goods WHERE (img = '{$deletedGood}')");
+        $_POST = [];
+    }
+    $file = getAssocResult('SELECT img FROM goods');
+    $fileName = array_column($file, 'img');
+    return $fileName;
+}
+
+function addGood()
+{
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $good = [];
         if (isset($_POST['title'])) $good['title'] = $_POST['title'];
         if (isset($_POST['img'])) $good['img'] = $_POST['img'];
         if (isset($_POST['description'])) $good['description'] = $_POST['description'];
         if (isset($_POST['price'])) $good['price'] = $_POST['price'];
-        executeQuery("INSERT INTO goods (title, img, description, price) VALUES ('" . $good['title'] . "', '" . $good['img'] . "', '" . $good['description'] . "', '" . $good['price'] . "')");
-
+        executeQuery("INSERT INTO goods (title, img, description, price) 
+              VALUES ('{$good['title']}', '{$good['img']}', '{$good['description']}', '{$good['price']}')");
     }
 }
 
-function escapeString($db, $str) {
+function escapeString($db, $str)
+{
     return mysqli_real_escape_string($db, htmlspecialchars(strip_tags($str)));
 }

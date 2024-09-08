@@ -2,8 +2,8 @@
 const SITE_ROOT = '../';
 const WWW_ROOT = SITE_ROOT . 'public/';
 const IMG_DIR = WWW_ROOT . 'img/';
-const IMGL4_DIR = WWW_ROOT . 'l4e1pics/';
-const IMGL5_DIR = WWW_ROOT .  'l5pics/';
+const IMGL4_DIR = IMG_DIR . 'l4e1pics/';
+const IMGL5_DIR = IMG_DIR .  'l5pics/';
 const IMGL6_DIR = IMG_DIR . 'catalogpics';
 const DATA_DIR = SITE_ROOT . 'data/';
 const LIB_DIR = SITE_ROOT . 'engine/';

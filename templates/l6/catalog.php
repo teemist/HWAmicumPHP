@@ -1,15 +1,14 @@
 <?php
-require_once('../config/config.php');
-require_once('../engine/db.php');
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $good = [];
-    if (isset($_POST['title'])) $good['title'] = $_POST['title'];
-    if (isset($_POST['img'])) $good['img'] = $_POST['img'];
-    if (isset($_POST['description'])) $good['description'] = $_POST['description'];
-    if (isset($_POST['price'])) $good['price'] = $_POST['price'];
-    executeQuery("INSERT INTO goods (title, img, description, price) VALUES ('" . $good['title'] . "', '" . $good['img'] . "', '" . $good['description'] . "', '" . $good['price'] . "')");
-    var_dump($good);
+require_once('../../config/config.php');
+require_once('../../engine/db.php');
+
+require_once('../../engine/functions.php');
+
+if(isset($_POST['image'])){
+    deleteGood();
 }
+if(isset($_POST['title']) && isset($_POST['img']) || isset($_POST['description']) || isset($_POST['price']))
+addGood();
 
 ?>
 
@@ -26,14 +25,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php foreach (showGoodImg() as $image):
         ?>
         <a href="<?= 'goodCard.php' . '?name=' . $image ?>">
-            <img src='<?= IMGL6_DIR . '/' . $image ?>' width='400'>
+            <form method="post" action="catalog.php">
+                <input type="hidden" name="image" value="<?= $image ?>">
+                <input type="submit" value="Удалить товар">
+            </form>
+            <img src='<?= '../'. IMGL6_DIR . "/{$image}" ?>' width='400'>
         </a>
     <?php endforeach; ?>
 </div>
 
 <div>
     <h3>Добавить товар</h3>
-    <form type="post" action="catalog.php">
+    <form method="POST" action="catalog.php">
         <table>
             <tr>
                 <td>Название:</td>
@@ -42,6 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <tr>
                 <td>Изображение:</td>
                 <td><input type="text" name="img"></td>
+            </tr>
             <tr>
                 <td>Описание:</td>
                 <td><input type="text" name="description"></td>
@@ -51,9 +55,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <td> <input type="text" name="price"></td>
             </tr>
             <tr>
-                <td><input type="submit"></td>
+                <td colspan="2">
+                    <input type="submit" value="Добавить товар">
+                </td>
+            </tr>
         </table>
     </form>
+
 </div>
 </body>
 </html>
