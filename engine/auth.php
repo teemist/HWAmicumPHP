@@ -17,13 +17,9 @@ function authWithCredentials(){
     $password = $_POST['password'];
 
     // получаем данные пользователя по логину
-    $sql = "SELECT id, login, password FROM user WHERE login = '[{$username}]'";
+    $sql = "SELECT login, password FROM user WHERE login = '{$username}'";
     $user = getRowResult($sql);
 
-    var_dump($user);
-    var_dump($username);
-
-    var_dump($password);
     // проверяем соответствие логина и пароля
     if($user === null){
         $isAuth = false;

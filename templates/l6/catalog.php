@@ -4,9 +4,6 @@ require_once('../../engine/db.php');
 
 require_once('../../engine/functions.php');
 
-if(isset($_POST['image'])){
-    deleteGood();
-}
 if(isset($_POST['title']) && isset($_POST['img']) || isset($_POST['description']) || isset($_POST['price']))
 addGood();
 

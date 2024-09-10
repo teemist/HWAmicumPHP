@@ -11,10 +11,11 @@ function getAssocResult($sql)
     return $array_result;
 }
 
-function getRowResult($sql){
+function getRowResult($sql)
+{
     $array_result = getAssocResult($sql);
 
-    if(isset($array_result[0])){
+    if (isset($array_result[0])) {
         $result = $array_result[0];
     } else {
         $result = null;
@@ -32,6 +33,33 @@ function executeQuery($sql)
     return $result;
 }
 
+function getAllTableData($tableName, $select = '*', $limit = null, $order = null, $orderDirection = 'ASC')
+{
+    $sql = "SELECT {$select} FROM {$tableName}";
+
+    if ($order !== null) {
+        $sql .= " ORDER BY {$order} {$orderDirection}";
+    }
+
+    if ($limit !== null) {
+        $sql .= " LIMIT {$limit}";
+    }
+
+    return getAssocResult($sql);
+}
+
+
+function connect()
+{
+    $db = mysqli_connect(HOST, USER, PASS, DB);
+    if (!$db) {
+        echo 'Ошибка: Невозможно установить соединение с MySQL.' . PHP_EOL;
+        exit;
+    }
+    return $db;
+}
+
+
 function addReview($review)
 {
     $title = $review['title'];
@@ -43,8 +71,9 @@ function addReview($review)
 
 }
 
-function getReviews(){
-   return getAssocResult('SELECT title, author, text, rate FROM reviews');
+function getReviews()
+{
+    return getAssocResult('SELECT title, author, text, rate FROM reviews');
 }
 
 function showReviews()
@@ -62,16 +91,63 @@ function showReviews()
     }
 }
 
-function getProducts(){
+function getProducts()
+{
     return getAssocResult('SELECT * FROM products');
 }
 
-function connect()
+function addProductToCart($userId, $productId)
 {
-    $db = mysqli_connect(HOST, USER, PASS, DB);
-    if (!$db) {
-        echo 'Ошибка: Невозможно установить соединение с MySQL.' . PHP_EOL;
-        exit;
+    $sql = "SELECT count(*) as amount from cart where user_id = $userId && goods_id = $productId";
+    $result = getRowResult($sql);
+    if ($result['amount'] > 0) {
+        $sql = "UPDATE cart
+                SET amount = amount + 1
+                WHERE user_id = $userId AND goods_id = $productId;";
+    } else {
+        $sql = "INSERT INTO cart (user_id, goods_id, amount) VALUES ($userId, $productId, 1)";
     }
-    return $db;
+
+    return executeQuery($sql);
+}
+
+function deleteGoodFromOrder($userId, $goodId, $amount)
+{
+    if ($amount === "1") {
+        $sql = "DELETE FROM cart WHERE user_id = {$userId} AND goods_id = {$goodId}";
+    } else {
+        $sql = "UPDATE cart
+                SET amount = amount - 1
+                WHERE user_id = $userId AND goods_id = $goodId;";
+    }
+    return executeQuery($sql);
+}
+
+
+function getOrders()
+{
+    $sql = "SELECT cart.user_id as userId, user.login, goods_id as goodId, goods.title, goods.price, cart.amount FROM cart
+            INNER JOIN user ON cart.user_id = user.id
+            INNER JOIN goods ON cart.goods_id = goods.id";
+    $orders = getAssocResult($sql);
+    var_dump($orders);
+    return $orders;
+}
+
+function getGoodsPrices(){
+    return getAssocResult("SELECT id, title, price FROM goods");
+}
+
+function changeGoodPrice($price, $goodId){
+    return executeQuery("UPDATE goods SET goods.price = '{$price}' WHERE goods.id = '{$goodId}'");
+}
+
+//module2lesson4hw
+function getProductsWithLimit($limit, $offset){
+    $query = $pdo->prepare("SELECT * FROM products LIMIT :limit OFFSET :offset");
+    $query->bindParam(':limit', $limit, PDO::PARAM_INT);
+    $query->bindParam(':offset', $offset, PDO::PARAM_INT);
+    $query->execute();
+
+    return $query->fetchAll(PDO::FETCH_ASSOC);
 }

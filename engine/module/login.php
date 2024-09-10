@@ -4,7 +4,7 @@ require_once "../auth.php";
 $vars = [];
 // если уже залогинен, то выбрасываем на главную
 if(alreadyLoggedIn()){
-    header('Location: /');
+    header('Location: ../../templates/cabinet.php');
 }
 
 // если есть куки, то авторизуем сразу
@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         $error = 'Неправильный логин/пароль';
     }
     else{
-        header('Location: /');
+        header('Location: ../../templates/cabinet.php');
     }
 }
 

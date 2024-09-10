@@ -12,5 +12,5 @@ if(isset($_POST['username']) && isset($_POST['password'])) {
 
     mysqli_query(connect(), $transfer_sql);
 
-    require_once '../../templates/index.php';
+    require_once '../../templates/cabinet.php';
 } else echo 'Логин и пароль не переданы';

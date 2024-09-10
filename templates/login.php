@@ -1,4 +1,8 @@
-<?php if ($vars['errors']): ?>
+<?php
+
+//extract($vars);
+
+if ($vars['errors']): ?>
     <?= $vars['errors']; ?>
 <?php endif; ?>
 <form method="post">

@@ -14,4 +14,4 @@ $vars = [
     'username' => $_SESSION['user']
 ];
 
-require_once '../../templates/index.php';
+require_once '../../templates/cabinet.php';

@@ -5,31 +5,13 @@ function showCart()
 {
     if (isset($_SESSION['user'])) {
         $login = $_SESSION['user'];
-//        $user_id = getAssocResult("SELECT id FROM user WHERE login = '{$login}'");
-//        var_dump($login);
-//        var_dump($user_id);
-        $cart = getAssocResult("SELECT title, img, description, price FROM user
+        $cart = getAssocResult("SELECT cart.id id, title, img, description, price FROM user
                                     INNER JOIN cart ON user.id = cart.user_id
                                     INNER JOIN goods ON cart.goods_id = goods.id
                                     WHERE user.login = '{$login}';");
 
-//        $cart = getAssocResult("use test;SELECT * FROM cart;");
-        var_dump($cart);
-
         return $cart;
     }
-//        return $cart;
-//    }
-
-
-
-//    $goodInfo = getAssocResult('SELECT title, img, price FROM goods');
-//    foreach ($goodInfo as $good) {
-//        $title = $good['title'];
-//        $img = $good['img'];
-//        $price = $good['price'];
-//    }
-//    var_dump($goodInfo);
 }
 
 function getImg($dir)
@@ -104,7 +86,65 @@ function addGood()
     }
 }
 
+function getGoodTitleList(){
+    return getAssocResult('SELECT id, title from goods');
+}
+
+function deleteGoodFromCart()
+{
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+        $login = $_SESSION['user'];
+        $id = '';
+        if (isset($_POST['id'])) {
+            $id = $_POST['id'];
+            executeQuery("DELETE cart FROM cart
+                                    INNER JOIN user ON user.id = cart.user_id
+                                    WHERE user.login = '{$login}' AND (cart.id = '{$id}')");
+            $_POST = [];
+        }
+    }
+    header('Location cart.php');
+
+}
+
+function addGoodToCart()
+{
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+        $login = $_SESSION['user'];
+        $id = '';
+        if (isset($_POST['id'])) {
+            $id = $_POST['id'];
+            executeQuery("INSERT INTO cart
+            (user_id, goods_id)
+            VALUES( 2, 2);");
+            $_POST = [];
+        }
+    }
+    header('Location cart.php');
+
+}
+
 function escapeString($db, $str)
 {
     return mysqli_real_escape_string($db, htmlspecialchars(strip_tags($str)));
+}
+
+function changePrice(){
+    if(isset($_POST['id']) && isset($_POST['price'])){
+        var_dump($_POST);
+        $id = $_POST['id'];
+        $price = $_POST['price'];
+        var_dump($id);
+        var_dump($price);
+      var_dump(changeGoodPrice($id, $price));
+    }
+}
+
+function showLimitProducts(){
+    $offset = isset($_POST['offset']) ? intval($_POST['offset']) : 0;
+    $limit = 25;
+
+
 }
