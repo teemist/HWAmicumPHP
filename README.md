@@ -7,7 +7,7 @@ https://github.com/teemist/HWAmicumPHP\
 Урок 7: 1, 2, 3\
 Урок 8: Файлы заданий 1, 3: adminPanel, delete_from_order\
 Задание 2: реализовано в прошлой домашке, нужно переделать с асинхронным выполнением\
-Файл задания 4: changePrice\
+Файл задания 4: changePrice
 
 Модуль 2
 https://github.com/teemist/HWPHPModule2\
