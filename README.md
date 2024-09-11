@@ -12,4 +12,4 @@ https://github.com/teemist/HWAmicumPHP\
 Модуль 2
 https://github.com/teemist/HWPHPModule2\
 Уроки 1-3\
-Урок 4: файлы из 6 урока 5 задания(не завершено)\
+Урок 4: файлы из 6 урока 5 задания(не завершено)
